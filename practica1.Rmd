@@ -1,0 +1,6 @@
+---
+title: "practica1"
+author: "Mireia, Fernando, Javi"
+date: "16/12/2024"
+output: html_document
+---
