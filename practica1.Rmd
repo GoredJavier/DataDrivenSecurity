@@ -5,6 +5,17 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+```{r carga_librerias_y_ficheros, include=FALSE}
+library(readr)
+library(stringr)
+library(swirl)
+library(RCurl)
+
+git_epa_http <- getURL("https://raw.githubusercontent.com/GoredJavier/DataDrivenSecurity/refs/heads/main/epa-http.csv")
+epa_http <- read_table(git_epa_http, col_names = FALSE)
+
+```
+
 ## Pregunta 1
 
 De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria,
@@ -73,6 +84,16 @@ prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, c
 4.2. Se analizan conexiones desde diferentes IPS ya que las pruebas normalmente vienen solo de una IP 
 
 4.3. Se analizan conexiones desde equipos que no hagan pruebas 
+
+
+```{r}
+
+View(epa_http)
+
+```
+
+
+
 
 # BOrrar a partir de aquí
 ## R Markdown
