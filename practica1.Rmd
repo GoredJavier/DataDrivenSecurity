@@ -7,6 +7,37 @@ output: html_document
 
 ## Pregunta 1
 
+De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria,
+inferencia, predictiva o causal, y razona brevemente (una frase) el porqué:
+
+1. Dado un registro de vehículos que circulan por una autopista, disponemos de su
+marca y modelo, país de matriculación, y tipo de vehículo (por número de
+ruedas). Con tal de ajustar precios de los peajes, ¿Cuántos vehículos tenemos
+por tipo? ¿Cuál es el tipo más frecuente? ¿De qué países tenemos más vehículos?
+
+**Descriptiva:** Se considera que la primera pregunta es descritiva dado que las preguntas hacen referencia al conjunto de datos inicial. El origen de los datos es único, el registro de vehículos, y no es necesario que existan relaciones con otros conjuntos de datos para obtener la información.  
+
+2. Dado un registro de visualizaciones de un servicio de video-on-demand, donde
+disponemos de los datos del usuario, de la película seleccionada, fecha de
+visualización y categoría de la película, queremos saber ¿Hay alguna preferencia
+en cuanto a género literario según los usuarios y su rango de edad?
+
+**Exploratoria:** En este caso se busca obtener información sobre los usuarios, sus características y las visualizaciones de películas; por lo tanto es necesario analizar y relacionar distintos conjuntos de datos.   
+
+3. Dado un registro de peticiones a un sitio web, vemos que las peticiones que
+provienen de una red de telefonía concreta acostumbran a ser incorrectas y
+provocarnos errores de servicio. ¿Podemos determinar si en el futuro, los
+próximos mensajes de esa red seguirán dando problemas? ¿Hemos notado el
+mismo efecto en otras redes de telefonía?
+
+**Predictiva:** Dado que lo que se pretente es averiguar el comportamiento a futuro basandose en los patrones actuales, es decir se pretende predecir algo desconocido y de lo que no tenemos información en este momento (i.e. valor no visto). 
+
+4. Dado los registros de usuarios de un servicio de compras por internet, los
+usuarios pueden agruparse por preferencias de productos comprados.
+Queremos saber si ¿Es posible que, dado un usuario al azar y según su historial,
+pueda ser directamente asignado a un o diversos grupos?
+
+**Inferencial:** En este caso se considera que el conjunto de datos son los registros de los usuario del servicio de compras; a partir de los datos de las compras realizadas y la agrupación o categorización inicial; se quiere inferir la agrupación o categorización de un nuevo usuario aunque nunca haya comprado.  
 
 # BOrrar a partir de aquí
 ## R Markdown
