@@ -16,6 +16,8 @@ epa_http <- read_table(git_epa_http, col_names = FALSE)
 
 ```
 
+# 1 Data Science
+
 ## Pregunta 1
 
 De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria,
@@ -86,32 +88,48 @@ prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, c
 4.3. Se analizan conexiones desde equipos que no hagan pruebas 
 
 
+# Introducción al R
+
+## Pregunta 1
+
+Una vez cargado el Dataset a analizar, comprobando que se cargan las IPs, el
+Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes de reply.
+
+1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
+2. Valor medio de la columna Bytes
+
+*Consejo: probad distintos parámetros para las funciones de carga de datos o directamente usad el asistente visual de RStudio para cargar datos en el panel de Entorno (Environment).*
+
+
+## Pregunta 2
+
+De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP
+claramente educativa (que contenga ".edu")?
+
+## Pregunta 3
+
+De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
+## Pregunta 4
+
+De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
+## Pregunta 5
+
+Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el
+separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
+## Pregunta 6
+
+Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo)
+¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+
+
+
+Para borrar:
 ```{r}
 
 View(epa_http)
 
 ```
 
-
-
-
-# BOrrar a partir de aquí
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
