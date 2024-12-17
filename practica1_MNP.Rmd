@@ -14,7 +14,9 @@ library(RCurl)
 git_epa_http <- getURL("https://raw.githubusercontent.com/GoredJavier/DataDrivenSecurity/refs/heads/main/epa-http.csv")
 #epa_http <- read_table(git_epa_http, col_names = FALSE)
 epa_http <- read_table(git_epa_http, 
-    col_names = FALSE, col_types = cols(X6 = col_integer()))
+    col_names = FALSE, col_types = cols(X7 = col_integer()))
+
+
 
 ```
 
@@ -99,9 +101,34 @@ Una vez cargado el Dataset a analizar, comprobando que se cargan las IPs, el
 Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes de reply.
 
 1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
+
+> Se pueden obtener las dimensiones se puede hacer utilizando los comandos ncol y nrow; o bien si se desea tener una visión general, se puede usar summary. 
+
+**Número de columnas:** 
+```{r}
+ncol(epa_http)
+```
+
+**Número de filas:** 
+```{r}
+nrow(epa_http)
+```
+
+**Summary:** 
+```{r}
+summary(epa_http)
+```
+
+
 2. Valor medio de la columna Bytes
 
-*Consejo: probad distintos parámetros para las funciones de carga de datos o directamente usad el asistente visual de RStudio para cargar datos en el panel de Entorno (Environment).*
+**Valor medio:** 
+```{r }
+colMeans(data.frame(epa_http$X7),na.rm = TRUE)
+```
+
+
+*Consejo: probad distintos parámetros para las funciones de carga de datos o directamente usad el asistente visual de RStudio para cargar datos en el panel de Entorn (Environment).*
 
 
 ## Pregunta 2
@@ -109,18 +136,31 @@ Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes d
 De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP
 claramente educativa (que contenga ".edu")?
 
+**IPs:** 
+```{r }
+length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
+
+```
+
+
 ## Pregunta 3
 
 De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
+> ¿Cómo se leen las horas? 
 
 ## Pregunta 4
 
 De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
 
+> ¿txt o txt.html? 
+
 ## Pregunta 5
 
 Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el
 separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
+> ¿No viene ya separado? 
 
 ## Pregunta 6
 
