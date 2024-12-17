@@ -87,6 +87,11 @@ prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, c
 
 4.3. Se analizan conexiones desde equipos que no hagan pruebas 
 
+(FPV) 
+1. Se desestiman todos las conexiones a servicios autorizados y se toman todas las conexiones a servicios no autorizados
+2.Sobre las conexiones de servicios no autorizados se deben desestimar las conexiones a servicios de prueba (Se supone que la compañia tiene una politica en la que los usuario que desean hacer pruebas deben reportarlo)
+3. Se observan los servicios no autorizados y se relacionan con la IP que habilita el servicio (IP que abre el puerto)
+  
 
 # Introducción al R
 
