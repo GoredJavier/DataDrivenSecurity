@@ -1,8 +1,12 @@
 ---
 title: "Práctica AE1"
-author: "Grupo 1: Javier Gómez Rodríguez, Fernando Palma Villanueva, Mireia Náger Piazuelo"
-date: "`r Sys.Date()`"
-output: html_document
+author: "Grupo 1"
+date: "`r format(Sys.time(), '%d-%m-%Y')`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    
 ---
 
 ```{r carga_librerias_y_ficheros, include=FALSE}
@@ -18,7 +22,22 @@ epa_http <- read_table(git_epa_http,
 
 ```
 
-# 1 Data Science
+# Autores
+
+**Práctica:** Actividad Evaluable 1  
+**Asignatura:** Data Driven Security  
+**Fecha:** `r format(Sys.time(), '%d-%m-%Y')`  
+
+
+|Grupo 1 |  
+|:--------|  
+|Javier Gómez Rodríguez|  
+|Fernando Palma Villanueva|  
+|Mireia Náger Piazuelo| 
+
+
+
+# 1. Data Science
 
 ## Pregunta 1
 
@@ -96,7 +115,7 @@ prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, c
 3. Se observan los servicios no autorizados y se relacionan con la IP que habilita el servicio (IP que abre el puerto)
   
 
-# Introducción al R
+# 2. Introducción al R
 
 ## Pregunta 1
 
