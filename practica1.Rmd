@@ -16,11 +16,24 @@ library(swirl)
 library(RCurl)
 
 git_epa_http <- getURL("https://raw.githubusercontent.com/GoredJavier/DataDrivenSecurity/refs/heads/main/epa-http.csv")
-#epa_http <- read_table(git_epa_http, col_names = FALSE)
-epa_http <- read_table(git_epa_http, 
-    col_names = FALSE, col_types = cols(X6 = col_integer()))
+epa_http <- read_table(git_epa_http, col_names = FALSE)
 
-#FACTOR y FECHA
+epa_http$X6 <- as.factor(epa_http$X6)
+epa_http$X7 <- as.numeric(epa_http$X7)
+
+#epa_http$X2 <- as.DateTime(gsub("^\\[|\\]$", "", epa_http$X2),"%d:%H:%M:%S")
+
+#epa_http$X2 <- as.POSIXct(gsub("^\\[|\\]$", "", epa_http$X2),format="%d:%H:%M:%S")
+
+#for (i in 1:nrow(epa_http)) {
+
+# Eliminar los corchetes con gsub
+##request_time_clean <- gsub("^\\[|\\]$", "", epa_http[i,2])
+
+# Convertir usando strptime() con el formato de entrada
+#datetime <- strptime(request_time_clean, format="%d:%H:%M:%S")
+
+#}
 
 ```
 
@@ -51,13 +64,14 @@ marca y modelo, país de matriculación, y tipo de vehículo (por número de
 ruedas). Con tal de ajustar precios de los peajes, ¿Cuántos vehículos tenemos
 por tipo? ¿Cuál es el tipo más frecuente? ¿De qué países tenemos más vehículos?
 
-> **Respuesta 1:** Se considera que la primera pregunta es *descriptiva* dado que las preguntas hacen referencia al conjunto de datos inicial. El origen de los datos es único, el registro de vehículos, y no es necesario que existan relaciones con otros conjuntos de datos para obtener la respuesta a las preguntas. 
+
+> **Respuesta 1:** Se considera que la primera pregunta es *descriptiva* dado que las preguntas hacen referencia al conjunto de datos inicial y se centran basicamente en un resumen de los datos observados. El origen de los datos es único - el registro de vehículos- y no es necesario que existan relaciones con otros conjuntos de datos para obtener la respuesta a las preguntas.
 
 2. Dado un registro de visualizaciones de un servicio de video-on-demand, donde
 disponemos de los datos del usuario, de la película seleccionada, fecha de visualización y categoría de la película, queremos saber ¿Hay alguna preferencia
 en cuanto a género literario según los usuarios y su rango de edad?
 
-> **Respuesta 2:** En este caso sería una pregunta *exploratoria* ya que se busca obtener información sobre los usuarios existentes en el conjunto de datos, sus características y las visualizaciones de películas que se han realizado; por lo tanto es necesario analizar y relacionar distintos conjuntos de datos que ya se tienen.   
+> **Respuesta 2:** En este caso sería una pregunta *exploratoria* ya que se busca obtener información sobre los usuarios existentes en el conjunto de datos, sus características y las visualizaciones de películas que se han realizado; por lo tanto es necesario analizar y relacionar distintos conjuntos de datos que ya se tienen.  
 
 3. Dado un registro de peticiones a un sitio web, vemos que las peticiones que
 provienen de una red de telefonía concreta acostumbran a ser incorrectas y
@@ -65,14 +79,14 @@ provocarnos errores de servicio. ¿Podemos determinar si en el futuro, los
 próximos mensajes de esa red seguirán dando problemas? ¿Hemos notado el
 mismo efecto en otras redes de telefonía?
 
-> **Respuesta 3:** La pregunta tres sería *predictiva* dado que lo que se pretente es averiguar el comportamiento a futuro basandose en los patrones actuales, es decir se pretende predecir algo desconocido y de lo que no tenemos información en este momento partiendo del conjunto de datos actual (i.e. valor no visto). 
+> **Respuesta 3:** La tercera pregunta se clasifica como *predictiva*, ya que busca anticipar un comportamiento futuro a partir de patrones observados en los datos actuales. Es decir, se intenta predecir un evento desconocido o no observado hasta el momento utilizando la información disponible en el conjunto de datos existente.(i.e. valor no visto).
 
 4. Dado los registros de usuarios de un servicio de compras por internet, los
 usuarios pueden agruparse por preferencias de productos comprados.
 Queremos saber si ¿Es posible que, dado un usuario al azar y según su historial,
 pueda ser directamente asignado a un o diversos grupos?
 
-> **Respuesta 4:** Este caso sería una pregunta *inferencial* dado que partiendo de los datos de de los usuarios existentes (registros, compras relizadas, agrupación); se quiere determinar la asignación de grupos de un nuevo usuario aunque nunca haya comprado y no esté en el conjunto de datos inicial.  
+> **Respuesta 4:** Este caso se considera una pregunta *inferencial* dado que partiendo de los datos de de los usuarios existentes (registros, compras relizadas, agrupación); se busca determinar la asignación de un nuevo usuario a uno o varios grupos. Aquí se asume que los datos existentes permiten inferir pertenencia a grupos, lo que implica un razonamiento estadístico o basado en modelos de clasificación. 
 
 
 ## Pregunta 2
@@ -89,32 +103,20 @@ clientes se conectan desde lugares remotos de forma legítima, como parte de nue
 negocio, y que un trabajador puede haber habilitado temporalmente servicios de
 prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, con tal de explicarles que por favor no expongan nuestros sistemas sin permiso de los operadores o la dirección.
 
-> Revisar
 
-*Resumen del problema:* Publicación de un servicio web no autorizado en internet por parte un empleado.
+> **Resumen del problema:** Publicación de un servicio web no autorizado en internet por parte un empleado.
 
-*Conjuntos de datos:* registros de conexiones TPC de cada máquina, listado de servicios web autorizados, conexiones de clientes; Servicios de prueba habilitados por trabajadores
+> **Conjuntos de datos:** registros de conexiones TPC de cada máquina, listado de servicios web autorizados, conexiones de clientes; Servicios de prueba habilitados por trabajadores
 
-*Análisis:* Se analiza el registro de conexiones TCP como base para identificar las conexiones entrantes para identificar aquellas no autorizadas. Los pasos que se siguen son:
+> **Análisis:** Se analiza el registro de conexiones TCP como base para identificar las conexiones entrantes para identificar aquellas no autorizadas. Los pasos que se siguen son:
 
-1. Se parte de todo el registro de conexiones TCP y se filtran solo las conexiones entrantes
-
-2. Se eliminan del listado las conexiones a IPs a servicios web autorizados por la empresa
-
-3. Se eliminan del listado las conexiones legitimas de clientes
-
-4. Con los datos resultantes, se miran varias opciones para analizar comportamientos anómalos:
-
-4.1. Se analizan conexiones fuera de horario
-
-4.2. Se analizan conexiones desde diferentes IPS ya que las pruebas normalmente vienen solo de una IP 
-
-4.3. Se analizan conexiones desde equipos que no hagan pruebas 
-
-(FPV) 
-1. Se desestiman todos las conexiones a servicios autorizados y se toman todas las conexiones a servicios no autorizados
-2.Sobre las conexiones de servicios no autorizados se deben desestimar las conexiones a servicios de prueba (Se supone que la compañia tiene una politica en la que los usuario que desean hacer pruebas deben reportarlo)
-3. Se observan los servicios no autorizados y se relacionan con la IP que habilita el servicio (IP que abre el puerto)
+> 1. Se parte de todo el registro de conexiones TCP y se filtran solo las conexiones entrantes
+> 2. Se eliminan del listado las conexiones a IPs a servicios web autorizados por la empresa
+> 3. Se eliminan del listado las conexiones legitimas de clientes
+> 4. Con los datos resultantes, se miran varias opciones para analizar comportamientos anómalos:
+> - Se analizan conexiones fuera de horario
+> - Se analizan conexiones desde diferentes IPS ya que las pruebas normalmente vienen solo de una IP 
+> - Se analizan conexiones desde equipos que no hagan pruebas 
   
 
 # 2. Introducción al R
@@ -127,7 +129,7 @@ Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes d
 1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
 2. Valor medio de la columna Bytes
 
-> Se pueden obtener las dimensiones se puede hacer utilizando los comandos ncol y nrow; o bien si se desea tener una visión general, se puede usar summary. 
+> Se pueden obtener las dimensiones utilizando los comandos ncol y nrow; o bien si se desea tener una visión general, se puede usar summary. 
 
 **Número de columnas:** 
 ```{r}
@@ -150,8 +152,9 @@ summary(epa_http)
 De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP
 claramente educativa (que contenga ".edu")?
 
-**IPs que pertenezcan a IP educativa (Ojo! No se revisa si hay duplicados):** 
+**Las IPs que son claramente educativas (".edu") son:** 
 ```{r }
+
 length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
 
 ```
@@ -161,26 +164,85 @@ length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
 
 De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
 
+
+
 ## Pregunta 4
 
 De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
+> Para resolver este ejercicio se han buscado primero las peticiones hechas por instituciones educativas y luego sobre el subconjunto se filtran aquellos cuyo nombre acaba en .txt. El número de bits se suma con una iteración. 
+
+```{r}
+edu_df <- epa_http[grepl(".edu", epa_http$X1), ]
+get_df <- edu_df[grepl("GET", edu_df$X3), ]
+txt_df <- get_df[grepl(".txt$", get_df$X4), ]
+#print(txt_df)
+
+# Inicializar el contador
+countBytes <- 0
+
+# Iterar sobre las filas de txt_df
+for (i in 1:nrow(txt_df)) {
+  # Comprobar si el valor no es NA
+  if (!is.na(txt_df[i, 7])) {
+    # Sumar el valor de la columna 7
+    countBytes <- countBytes + txt_df[i, 7]
+  }
+}
+
+# Mostrar el resultado
+print(countBytes)
+
+```
+
+
 
 ## Pregunta 5
 
 Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el
 separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
 
+> Con una iteración se comprueba si la 4rta columna, que contiene la url, se corresponde con "/" y se cuentan las peticiones que cumplen dicha condición.
+
+```{r}
+
+# Inicializar el contador
+countSlice <- 0
+
+# Iterar sobre las filas del dataframe
+for (i in 1:nrow(epa_http)) {
+  # Comprobar si la cuarta columna contiene solo "/"
+  if (epa_http[i, 4] == '/') {
+    countSlice <- countSlice + 1  # Incrementar el contador
+  }
+}
+
+print(countSlice)
+
+```
+
+
 ## Pregunta 6
 
 Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo)
 ¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
 
+> Con una iteración se comprueba si la 5a columna, que contiene el protocolo, NO se corresponde con "HTTP/0.2" y se cuentan las peticiones que cumplen dicha condición.
 
 
-Para borrar:
 ```{r}
 
-View(epa_http)
+# Inicializar el contador
+countProto <- 0
 
+# Iterar sobre las filas del dataframe
+for (i in 1:nrow(epa_http)) {
+  # Comprobar si la cuarta columna contiene solo "/"
+  if (epa_http[i, 5] != 'HTTP/0.2"') {
+    countProto <- countProto + 1  # Incrementar el contador
+  }
+}
+
+print(countProto)
 ```
 
