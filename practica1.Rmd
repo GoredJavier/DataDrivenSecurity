@@ -23,7 +23,7 @@ epa_http$X7 <- as.numeric(epa_http$X7)
 
 #epa_http$X2 <- as.DateTime(gsub("^\\[|\\]$", "", epa_http$X2),"%d:%H:%M:%S")
 
-#epa_http$X2 <- as.POSIXct(gsub("^\\[|\\]$", "", epa_http$X2),format="%d:%H:%M:%S")
+epa_http$X2 <- as.POSIXct(gsub("^\\[|\\]$", "", epa_http$X2), format="%d:%H:%M:%S")
 
 #for (i in 1:nrow(epa_http)) {
 
