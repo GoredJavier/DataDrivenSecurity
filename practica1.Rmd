@@ -20,6 +20,8 @@ git_epa_http <- getURL("https://raw.githubusercontent.com/GoredJavier/DataDriven
 epa_http <- read_table(git_epa_http, 
     col_names = FALSE, col_types = cols(X6 = col_integer()))
 
+#FACTOR y FECHA
+
 ```
 
 # Autores
@@ -125,13 +127,35 @@ Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes d
 1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
 2. Valor medio de la columna Bytes
 
-*Consejo: probad distintos parámetros para las funciones de carga de datos o directamente usad el asistente visual de RStudio para cargar datos en el panel de Entorno (Environment).*
+> Se pueden obtener las dimensiones se puede hacer utilizando los comandos ncol y nrow; o bien si se desea tener una visión general, se puede usar summary. 
+
+**Número de columnas:** 
+```{r}
+ncol(epa_http)
+```
+
+**Número de filas:** 
+```{r}
+nrow(epa_http)
+```
+
+**Summary:** 
+```{r}
+summary(epa_http)
+```
 
 
 ## Pregunta 2
 
 De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP
 claramente educativa (que contenga ".edu")?
+
+**IPs que pertenezcan a IP educativa (Ojo! No se revisa si hay duplicados):** 
+```{r }
+length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
+
+```
+
 
 ## Pregunta 3
 
