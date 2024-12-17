@@ -1653,22 +1653,22 @@ summary.</p>
 <pre><code>## [1] 47748</code></pre>
 <p><strong>Summary:</strong></p>
 <pre class="r"><code>summary(epa_http)</code></pre>
-<pre><code>##       X1                 X2                 X3                 X4           
-##  Length:47748       Length:47748       Length:47748       Length:47748      
-##  Class :character   Class :character   Class :character   Class :character  
-##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
-##                                                                             
-##                                                                             
-##                                                                             
-##                                                                             
-##       X5                  X6              X7         
-##  Length:47748       200    :36712   Min.   :      0  
-##  Class :character   304    : 5300   1st Qu.:    231  
-##  Mode  :character   302    : 4506   Median :   1260  
-##                     404    :  611   Mean   :   7352  
-##                     403    :  272   3rd Qu.:   3223  
-##                     501    :  272   Max.   :4816896  
-##                     (Other):   75   NA&#39;s   :5331</code></pre>
+<pre><code>##       X1                  X2                              X3           
+##  Length:47748       Min.   :2024-12-29 23:53:25.00   Length:47748      
+##  Class :character   1st Qu.:2024-12-30 10:58:37.25   Class :character  
+##  Mode  :character   Median :2024-12-30 13:57:46.50   Mode  :character  
+##                     Mean   :2024-12-30 13:48:49.32                     
+##                     3rd Qu.:2024-12-30 16:37:32.00                     
+##                     Max.   :2024-12-30 23:53:07.00                     
+##                                                                        
+##       X4                 X5                  X6              X7         
+##  Length:47748       Length:47748       200    :36712   Min.   :      0  
+##  Class :character   Class :character   304    : 5300   1st Qu.:    231  
+##  Mode  :character   Mode  :character   302    : 4506   Median :   1260  
+##                                        404    :  611   Mean   :   7352  
+##                                        403    :  272   3rd Qu.:   3223  
+##                                        501    :  272   Max.   :4816896  
+##                                        (Other):   75   NA&#39;s   :5331</code></pre>
 </div>
 <div id="pregunta-2-1" class="section level2">
 <h2>Pregunta 2</h2>
@@ -1683,6 +1683,24 @@ son:</strong></p>
 <h2>Pregunta 3</h2>
 <p>De todas las peticiones recibidas por el servidor cual es la hora en
 la que hay mayor volumen de peticiones HTTP de tipo “GET”?</p>
+<blockquote>
+<p>Este ejercicio no se ha podido acabar de probar en clase; la lógica
+es incrementar cada indice de un vector de 24 posiciones con cada
+ocurrencia de cada hora; para localizar las horas de máxima
+ocurrencia.</p>
+</blockquote>
+<pre class="r"><code>#get_df &lt;- epa_http[grepl(&quot;GET&quot;, epa_http$X3), ]
+#countHours &lt;- c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+#
+## Iterar sobre las filas de get_df
+#for (i in 1:nrow(get_df)) {
+#   # Se suma en la hora correspondiente
+#    hora &lt;- format(get_df$X2, &#39;%H&#39;)
+#    countHours[hora] &lt;- countHours[hora] + 1
+#    print (countHours)
+#}
+
+#max(countHours)</code></pre>
 </div>
 <div id="pregunta-4" class="section level2">
 <h2>Pregunta 4</h2>
@@ -1696,9 +1714,7 @@ filtran aquellos cuyo nombre acaba en .txt. El número de bits se suma
 con una iteración.</p>
 </blockquote>
 <pre class="r"><code>edu_df &lt;- epa_http[grepl(&quot;.edu&quot;, epa_http$X1), ]
-get_df &lt;- edu_df[grepl(&quot;GET&quot;, edu_df$X3), ]
-txt_df &lt;- get_df[grepl(&quot;.txt$&quot;, get_df$X4), ]
-#print(txt_df)
+txt_df &lt;- edu_df[grepl(&quot;.txt$&quot;, edu_df$X4), ]
 
 # Inicializar el contador
 countBytes &lt;- 0
@@ -1738,6 +1754,7 @@ for (i in 1:nrow(epa_http)) {
   }
 }
 
+# Mostrar el resultado
 print(countSlice)</code></pre>
 <pre><code>## [1] 2382</code></pre>
 </div>
