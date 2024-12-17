@@ -1,0 +1,186 @@
+---
+title: "Práctica AE1"
+author: "Grupo 1"
+date: "`r format(Sys.time(), '%d-%m-%Y')`"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    
+---
+
+```{r carga_librerias_y_ficheros, include=FALSE}
+library(readr)
+library(stringr)
+library(swirl)
+library(RCurl)
+
+git_epa_http <- getURL("https://raw.githubusercontent.com/GoredJavier/DataDrivenSecurity/refs/heads/main/epa-http.csv")
+#epa_http <- read_table(git_epa_http, col_names = FALSE)
+epa_http <- read_table(git_epa_http, 
+    col_names = FALSE, col_types = cols(X6 = col_integer()))
+
+#FACTOR y FECHA
+
+```
+
+# Autores
+
+**Práctica:** Actividad Evaluable 1  
+**Asignatura:** Data Driven Security  
+**Fecha:** `r format(Sys.time(), '%d-%m-%Y')`  
+
+
+|Grupo 1 |  
+|:--------|  
+|Javier Gómez Rodríguez|  
+|Fernando Palma Villanueva|  
+|Mireia Náger Piazuelo| 
+
+
+
+# 1. Data Science
+
+## Pregunta 1
+
+De las siguientes preguntas, clasifica cada una como descriptiva, exploratoria,
+inferencia, predictiva o causal, y razona brevemente (una frase) el porqué:
+
+1. Dado un registro de vehículos que circulan por una autopista, disponemos de su
+marca y modelo, país de matriculación, y tipo de vehículo (por número de
+ruedas). Con tal de ajustar precios de los peajes, ¿Cuántos vehículos tenemos
+por tipo? ¿Cuál es el tipo más frecuente? ¿De qué países tenemos más vehículos?
+
+> **Respuesta 1:** Se considera que la primera pregunta es *descriptiva* dado que las preguntas hacen referencia al conjunto de datos inicial. El origen de los datos es único, el registro de vehículos, y no es necesario que existan relaciones con otros conjuntos de datos para obtener la respuesta a las preguntas. 
+
+2. Dado un registro de visualizaciones de un servicio de video-on-demand, donde
+disponemos de los datos del usuario, de la película seleccionada, fecha de visualización y categoría de la película, queremos saber ¿Hay alguna preferencia
+en cuanto a género literario según los usuarios y su rango de edad?
+
+> **Respuesta 2:** En este caso sería una pregunta *exploratoria* ya que se busca obtener información sobre los usuarios existentes en el conjunto de datos, sus características y las visualizaciones de películas que se han realizado; por lo tanto es necesario analizar y relacionar distintos conjuntos de datos que ya se tienen.   
+
+3. Dado un registro de peticiones a un sitio web, vemos que las peticiones que
+provienen de una red de telefonía concreta acostumbran a ser incorrectas y
+provocarnos errores de servicio. ¿Podemos determinar si en el futuro, los
+próximos mensajes de esa red seguirán dando problemas? ¿Hemos notado el
+mismo efecto en otras redes de telefonía?
+
+> **Respuesta 3:** La pregunta tres sería *predictiva* dado que lo que se pretente es averiguar el comportamiento a futuro basandose en los patrones actuales, es decir se pretende predecir algo desconocido y de lo que no tenemos información en este momento partiendo del conjunto de datos actual (i.e. valor no visto). 
+
+4. Dado los registros de usuarios de un servicio de compras por internet, los
+usuarios pueden agruparse por preferencias de productos comprados.
+Queremos saber si ¿Es posible que, dado un usuario al azar y según su historial,
+pueda ser directamente asignado a un o diversos grupos?
+
+> **Respuesta 4:** Este caso sería una pregunta *inferencial* dado que partiendo de los datos de de los usuarios existentes (registros, compras relizadas, agrupación); se quiere determinar la asignación de grupos de un nuevo usuario aunque nunca haya comprado y no esté en el conjunto de datos inicial.  
+
+
+## Pregunta 2
+
+Considerando el siguiente escenario:
+
+Sabemos que un usuario de nuestra red empresarial ha estado usando esta para fines
+no relacionados con el trabajo, como por ejemplo tener un servicio web no autorizado
+abierto a la red (otros usuarios tienen servicios web activados y autorizados). No
+queremos tener que rastrear los puertos de cada PC, y sabemos que la actividad puede
+haber cesado. Pero podemos acceder a los registros de conexiones TCP de cada máquina
+de cada trabajador (hacia donde abre conexión un PC concreto). Sabemos que nuestros
+clientes se conectan desde lugares remotos de forma legítima, como parte de nuestro
+negocio, y que un trabajador puede haber habilitado temporalmente servicios de
+prueba. Nuestro objetivo es reducir lo posible la lista de posibles culpables, con tal de explicarles que por favor no expongan nuestros sistemas sin permiso de los operadores o la dirección.
+
+> Revisar
+
+*Resumen del problema:* Publicación de un servicio web no autorizado en internet por parte un empleado.
+
+*Conjuntos de datos:* registros de conexiones TPC de cada máquina, listado de servicios web autorizados, conexiones de clientes; Servicios de prueba habilitados por trabajadores
+
+*Análisis:* Se analiza el registro de conexiones TCP como base para identificar las conexiones entrantes para identificar aquellas no autorizadas. Los pasos que se siguen son:
+
+1. Se parte de todo el registro de conexiones TCP y se filtran solo las conexiones entrantes
+
+2. Se eliminan del listado las conexiones a IPs a servicios web autorizados por la empresa
+
+3. Se eliminan del listado las conexiones legitimas de clientes
+
+4. Con los datos resultantes, se miran varias opciones para analizar comportamientos anómalos:
+
+4.1. Se analizan conexiones fuera de horario
+
+4.2. Se analizan conexiones desde diferentes IPS ya que las pruebas normalmente vienen solo de una IP 
+
+4.3. Se analizan conexiones desde equipos que no hagan pruebas 
+
+(FPV) 
+1. Se desestiman todos las conexiones a servicios autorizados y se toman todas las conexiones a servicios no autorizados
+2.Sobre las conexiones de servicios no autorizados se deben desestimar las conexiones a servicios de prueba (Se supone que la compañia tiene una politica en la que los usuario que desean hacer pruebas deben reportarlo)
+3. Se observan los servicios no autorizados y se relacionan con la IP que habilita el servicio (IP que abre el puerto)
+  
+
+# 2. Introducción al R
+
+## Pregunta 1
+
+Una vez cargado el Dataset a analizar, comprobando que se cargan las IPs, el
+Timestamp, la Petición (Tipo, URL y Protocolo), Código de respuesta, y Bytes de reply.
+
+1. Cuales son las dimensiones del dataset cargado (número de filas y columnas)
+2. Valor medio de la columna Bytes
+
+> Se pueden obtener las dimensiones se puede hacer utilizando los comandos ncol y nrow; o bien si se desea tener una visión general, se puede usar summary. 
+
+**Número de columnas:** 
+```{r}
+ncol(epa_http)
+```
+
+**Número de filas:** 
+```{r}
+nrow(epa_http)
+```
+
+**Summary:** 
+```{r}
+summary(epa_http)
+```
+
+
+## Pregunta 2
+
+De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP
+claramente educativa (que contenga ".edu")?
+
+**IPs que pertenezcan a IP educativa (Ojo! No se revisa si hay duplicados):** 
+```{r }
+length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
+
+```
+
+
+## Pregunta 3
+
+De todas las peticiones recibidas por el servidor cual es la hora en la que hay mayor volumen de peticiones HTTP de tipo "GET"?
+
+## Pregunta 4
+
+De las peticiones hechas por instituciones educativas (.edu), ¿Cuantos bytes en total se han transmitido, en peticiones de descarga de ficheros de texto ".txt"?
+
+## Pregunta 5
+
+Si separamos la petición en 3 partes (Tipo, URL, Protocolo), usando str_split y el
+separador " " (espacio), ¿cuantas peticiones buscan directamente la URL = "/"?
+
+## Pregunta 6
+
+Aprovechando que hemos separado la petición en 3 partes (Tipo, URL, Protocolo)
+¿Cuantas peticiones NO tienen como protocolo "HTTP/0.2"?
+
+
+
+Para borrar:
+```{r}
+
+View(epa_http)
+
+```
+
