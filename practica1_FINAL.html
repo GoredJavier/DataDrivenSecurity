@@ -1480,7 +1480,7 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Práctica AE1</h1>
 <h4 class="author">Grupo 1</h4>
-<h4 class="date">21-12-2024</h4>
+<h4 class="date">22-12-2024</h4>
 
 </div>
 
@@ -1489,7 +1489,7 @@ border-radius: 0px;
 <h1>Autores</h1>
 <p><strong>Práctica:</strong> Actividad Evaluable 1<br />
 <strong>Asignatura:</strong> Data Driven Security<br />
-<strong>Fecha:</strong> 21-12-2024</p>
+<strong>Fecha:</strong> 22-12-2024</p>
 <table>
 <thead>
 <tr class="header">
@@ -1641,9 +1641,19 @@ columnas)</li>
 <li>Valor medio de la columna Bytes</li>
 </ol>
 <blockquote>
-<p>Se pueden obtener las dimensiones utilizando los comandos ncol y
-nrow; o bien si se desea tener una visión general, se puede usar
-summary.</p>
+<p>Primero se carga el fichero epa_http.</p>
+</blockquote>
+<pre class="r"><code>git_epa_http &lt;- getURL(&quot;https://raw.githubusercontent.com/GoredJavier/DataDrivenSecurity/refs/heads/main/epa-http.csv&quot;)
+epa_http &lt;- read_table(git_epa_http, col_names = FALSE)
+
+epa_http$X6 &lt;- as.factor(epa_http$X6)
+epa_http$X7 &lt;- as.numeric(epa_http$X7)
+
+epa_http$X2 &lt;- as.POSIXct(gsub(&quot;^\\[|\\]$&quot;, &quot;&quot;, epa_http$X2), format=&quot;%d:%H:%M:%S&quot;)</code></pre>
+<blockquote>
+<p>Una vez ya se ha cargado el fichero, se pueden obtener las
+dimensiones utilizando los comandos ncol y nrow; o bien si se desea
+tener una visión general, se puede usar summary.</p>
 </blockquote>
 <p><strong>Número de columnas:</strong></p>
 <pre class="r"><code>ncol(epa_http)</code></pre>
