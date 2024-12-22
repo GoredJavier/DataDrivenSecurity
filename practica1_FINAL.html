@@ -1685,7 +1685,9 @@ tener una visión general, se puede usar summary.</p>
 <p>De las diferentes IPs de origen accediendo al servidor, ¿cuantas
 pertenecen a una IP claramente educativa (que contenga “.edu”)?</p>
 <blockquote>
-<p>Las IPs que son claramente educativas (“.edu”) son:</p>
+<p>A continuación se muestra el número de IPs que contienen la cadena de
+carácteres “.edu”, independientemente de si la cadena está al final de
+la url o en medio.</p>
 </blockquote>
 <pre class="r"><code>length(which(grepl(&quot;.edu&quot;, epa_http$X1, fixed=FALSE)))</code></pre>
 <pre><code>## [1] 6539</code></pre>

@@ -124,7 +124,7 @@ summary(epa_http)
 
 De las diferentes IPs de origen accediendo al servidor, ¿cuantas pertenecen a una IP claramente educativa (que contenga ".edu")?
 
-> Las IPs que son claramente educativas (".edu") son: 
+> A continuación se muestra el número de IPs que contienen la cadena de carácteres ".edu", independientemente de si la cadena está al final de la url o en medio. 
 ```{r, cache=TRUE}
 
 length(which(grepl(".edu", epa_http$X1, fixed=FALSE)))
